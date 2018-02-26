@@ -103,13 +103,15 @@ public class Machine {
         //Run the microsteps for the DIVIDE Instruction
         @Override
         public void execute() {
-
+            int op2 = stack.pop();
+            int op1 = stack.pop();
+            stack.push( op1 / op2 );
         }
 
         //Show the DIVIDE instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "DIVIDE";
         }
     }
 
@@ -127,7 +129,9 @@ public class Machine {
         //Show the LOAD instruction as plain text
         @Override
         public String toString() {
-            return null;
+
+            //TODO IDK if this is done
+            return "LOAD";
         }
     }
 
@@ -139,13 +143,15 @@ public class Machine {
         //Run the microsteps for the MULTIPLY Instruction
         @Override
         public void execute() {
-
+            int op2 = stack.pop();
+            int op1 = stack.pop();
+            stack.push( op1 * op2 );
         }
 
         //Show the MULTIPLY instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "MULITPLY";
         }
     }
 
@@ -157,13 +163,14 @@ public class Machine {
         //Run the microsteps for the NEGATE Instruction
         @Override
         public void execute() {
-
+            int op1 = stack.pop();
+            stack.push( -1 * op1 );
         }
 
         //Show the NEGATE instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "NEGATE";
         }
     }
 
@@ -175,13 +182,14 @@ public class Machine {
         //Run the microsteps for the PRINT Instruction
         @Override
         public void execute() {
-
+            int op1 = stack.pop();
+            System.out.println("*** " + op1);
         }
 
         //Show the PRINT instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "PRINT";
         }
     }
 
@@ -189,6 +197,12 @@ public class Machine {
      * The PUSHCONST instruction
      */
     public static class PushConst implements Instruction{
+
+        //Constructor
+        public PushConst(int constant) {
+
+
+        }
 
         //Run the microsteps for the PUSHCONST Instruction
         @Override
@@ -199,7 +213,7 @@ public class Machine {
         //Show the PUSHCONST instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "PUSHCONST";
         }
     }
 
@@ -212,12 +226,14 @@ public class Machine {
         @Override
         public void execute() {
 
+            int op1 = stack.pop();
+            stack.push( Math.sqrt(op1) );
         }
 
         //Show the SQUAREROOT instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "SQUAREROOT";
         }
     }
 
@@ -256,13 +272,15 @@ public class Machine {
         //Run the microsteps for the SUBTRACT Instruction
         @Override
         public void execute() {
-
+            int op2 = stack.pop();
+            int op1 = stack.pop();
+            stack.push( op1 - op2 );
         }
 
         //Show the SUBTRACT instruction as plain text
         @Override
         public String toString() {
-            return null;
+            return "SUBTRACT";
         }
     }
 
