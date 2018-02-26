@@ -24,7 +24,7 @@ public class Machine {
 
 
     ////////////////////////////////////////////////////////
-    ////////////     Private Methods/Fileds     ////////////
+    ////////////     Private Methods/Fields     ////////////
     ////////////////////////////////////////////////////////
 
 
@@ -122,18 +122,22 @@ public class Machine {
      */
     public static class Load implements Instruction{
 
+        private String varname;
+
+        private Load(String varname) {
+            this.varname = varname;
+        }
+
         //Run the microsteps for the LOAD Instruction
         @Override
         public void execute() {
-            String varname = table.get(null);
-            stack.push(varname);
+            int key = table.get(this.varname);
+            stack.push(key);
         }
 
         //Show the LOAD instruction as plain text
         @Override
         public String toString() {
-
-            //TODO IDK if this is done
             return "LOAD";
         }
     }
@@ -204,8 +208,8 @@ public class Machine {
         private int constant;
 
         //Constructor
-        public PushConst(int constant) {
-            this.constant = constant
+        private PushConst(int constant) {
+            this.constant = constant;
         }
 
         //Run the microsteps for the PUSHCONST Instruction
@@ -229,9 +233,8 @@ public class Machine {
         //Run the microsteps for the SQUAREROOT Instruction
         @Override
         public void execute() {
-
             int op1 = stack.pop();
-            stack.push( Math.sqrt(op1) );
+            stack.push((int) Math.round(Math.sqrt(op1)));
         }
 
         //Show the SQUAREROOT instruction as plain text
@@ -250,7 +253,7 @@ public class Machine {
         private String name;
 
         //Constructor
-        public Store(String ident) {
+        private Store(String ident) {
             this.name = ident;
         }
 
@@ -303,7 +306,6 @@ public class Machine {
      *
      */
     public static void displayInstructions(List< Instruction > program) {
-            List< Machine.Instruction > program ) {
             System.out.println( "\nCompiled code:" );
             for ( Machine.Instruction instr: program ) {
                 System.out.println( instr );
