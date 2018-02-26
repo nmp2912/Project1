@@ -123,7 +123,8 @@ public class Machine {
         //Run the microsteps for the LOAD Instruction
         @Override
         public void execute() {
-
+            String varname = table.get(null);
+            stack.push(varname);
         }
 
         //Show the LOAD instruction as plain text
@@ -198,16 +199,17 @@ public class Machine {
      */
     public static class PushConst implements Instruction{
 
+        private int constant;
+
         //Constructor
         public PushConst(int constant) {
-
-
+            this.constant = constant
         }
 
         //Run the microsteps for the PUSHCONST Instruction
         @Override
         public void execute() {
-
+            stack.push( this.constant );
         }
 
         //Show the PUSHCONST instruction as plain text
