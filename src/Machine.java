@@ -6,6 +6,11 @@ import java.util.List;
 public class Machine {
 
 
+    ///////////////////////////////////////////////////
+    ////////////     Public Interfaces     ////////////
+    ///////////////////////////////////////////////////
+
+
     /**
      * The instructions interface
      */
@@ -25,6 +30,12 @@ public class Machine {
         public String toString();
 
     }
+
+
+    ////////////////////////////////////////////////
+    ////////////     Public Classes     ////////////
+    ////////////////////////////////////////////////
+
 
     /**
      * The ADD instruction
@@ -48,8 +59,6 @@ public class Machine {
 
             return null;
         }
-
-
     }
 
     /**
@@ -250,20 +259,27 @@ public class Machine {
         }
     }
 
+    ////////////////////////////////////////////////
+    ////////////     Public Methods     ////////////
+    ////////////////////////////////////////////////
 
     /**
+     * @param program - a list of instructions in the program
+     *
      * Generate a listing of a program on standard output by calling the
      * toString() method on each instruction contained therein, in order
      */
-    public static void discplayInstructions(List<Machine.Instruction> Program) {
+    public static void displayInstructions(List<Instruction> program) {
 
 
     }
 
     /**
+     * @param program - a list of Machine Instructions
+     *
      * Run a "compiled" program by executing in order each instruction contained therein
      */
-    public static void execute() {
+    public static void execute(List<Instruction> program) {
 
 
     }
