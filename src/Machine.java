@@ -50,12 +50,12 @@ public class Machine {
     /**
      * The instructions interface
      */
-    public static interface Instruction {
+    public interface Instruction {
 
         /**
          * Run this instruction on the Machine, using the Machine's value stack and symbol table
          */
-        public void execute();
+        void execute();
 
 
         /**
@@ -64,7 +64,7 @@ public class Machine {
          * @return String - A short string describing what this instruction will do
          */
         @Override
-        public String toString();
+        String toString();
 
     }
 
@@ -300,7 +300,7 @@ public class Machine {
      * @param program - a list of instructions in the program
      *
      */
-    public static void displayInstructions(List<Instruction> program) {
+    public static void displayInstructions(List< Instruction > program) {
             List< Machine.Instruction > program ) {
             System.out.println( "\nCompiled code:" );
             for ( Machine.Instruction instr: program ) {
