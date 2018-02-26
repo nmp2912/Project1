@@ -1,9 +1,45 @@
 import java.util.List;
+import java.util.Stack;
+import java.util.Map;
+import java.util.HashMap;
+import dendron.Errors;
 
 /**
- * The main MACHINE class
+ * An abstraction of a computing machine that reads instructions
+ * and executes them. It has an instruction set, a symbol table
+ * for variables (instead of general-purpose memory), and a
+ * value stack on which calculations are performed.
+ *
+ * (Everything is static to avoid the need to master the subtleties
+ * of nested class instantiation or to pass the symbol table and
+ * stack into every instruction when it executes.)
+ *
+ *
+ * @author James Heliotis
+ * @author Nicholas Pembroke
  */
 public class Machine {
+
+
+    ////////////////////////////////////////////////////////
+    ////////////     Private Methods/Fileds     ////////////
+    ////////////////////////////////////////////////////////
+
+
+    /** Do not instatiate this class. */
+    private Machine() {}
+
+    private static Map< String, Integer > table = null;
+    private static Stack< Integer > stack = null;
+
+    /**
+     * Reset the Machine to a pristine state.
+     * @see Machine#execute
+     */
+    private static void reset() {
+        stack = new Stack<>();
+        table = new HashMap<>();
+    }
 
 
     ///////////////////////////////////////////////////
@@ -27,6 +63,7 @@ public class Machine {
          *
          * @return String - A short string describing what this instruction will do
          */
+        @Override
         public String toString();
 
     }
@@ -42,22 +79,19 @@ public class Machine {
      */
     public static class Add implements Instruction{
 
-        //Constructor
-        public Add() {
-
-        }
-
         //Run the microsteps for the ADD Instruction
         @Override
         public void execute() {
-
+            int op2 = stack.pop();
+            int op1 = stack.pop();
+            stack.push( op1 + op2 );
         }
 
         //Show the ADD instruction as plain text
+        //@return "ADD"
         @Override
         public String toString() {
-
-            return null;
+            return "ADD";
         }
     }
 
@@ -65,9 +99,6 @@ public class Machine {
      * The DIVIDE instruction
      */
     public static class Divide implements Instruction{
-
-        //Constructor
-        public Divide() {}
 
         //Run the microsteps for the DIVIDE Instruction
         @Override
@@ -87,11 +118,6 @@ public class Machine {
      */
     public static class Load implements Instruction{
 
-        //Constructor
-        public Load(String ident) {
-
-        }
-
         //Run the microsteps for the LOAD Instruction
         @Override
         public void execute() {
@@ -109,10 +135,6 @@ public class Machine {
      * The MULTIPLY instruction
      */
     public static class Multiply implements Instruction{
-
-        //Constructor
-        public Multiply() {
-        }
 
         //Run the microsteps for the MULTIPLY Instruction
         @Override
@@ -132,10 +154,6 @@ public class Machine {
      */
     public static class Negate implements Instruction{
 
-        //Constructor
-        public Negate() {
-        }
-
         //Run the microsteps for the NEGATE Instruction
         @Override
         public void execute() {
@@ -153,10 +171,6 @@ public class Machine {
      * The PRINT instruction
      */
     public static class Print implements Instruction{
-
-        //Constructor
-        public Print() {
-        }
 
         //Run the microsteps for the PRINT Instruction
         @Override
@@ -176,10 +190,6 @@ public class Machine {
      */
     public static class PushConst implements Instruction{
 
-        //Constructor
-        public PushConst(int constant) {
-        }
-
         //Run the microsteps for the PUSHCONST Instruction
         @Override
         public void execute() {
@@ -197,10 +207,6 @@ public class Machine {
      * The SQUAREROOT instruction
      */
     public static class SquareRoot implements Instruction{
-
-        //Constructor
-        public SquareRoot() {
-        }
 
         //Run the microsteps for the SQUAREROOT Instruction
         @Override
@@ -220,20 +226,25 @@ public class Machine {
      */
     public static class Store implements Instruction{
 
+        //Store the name of the target variable
+        private String name;
+
         //Constructor
         public Store(String ident) {
+            this.name = ident;
         }
 
         //Run the microsteps for the STORE Instruction
         @Override
         public void execute() {
-
+            table.put( this.name, stack.pop() );
         }
 
         //Show the STORE instruction as plain text
+        //@return "STORE" followed by the target variable name
         @Override
         public String toString() {
-            return null;
+            return "STORE " + this.name;
         }
     }
 
@@ -241,10 +252,6 @@ public class Machine {
      * the SUBTRACT instruction
      */
     public static class Subtract implements Instruction{
-
-        //Constructor
-        public Subtract() {
-        }
 
         //Run the microsteps for the SUBTRACT Instruction
         @Override
@@ -259,28 +266,43 @@ public class Machine {
         }
     }
 
+
     ////////////////////////////////////////////////
     ////////////     Public Methods     ////////////
     ////////////////////////////////////////////////
 
+
     /**
-     * @param program - a list of instructions in the program
      *
      * Generate a listing of a program on standard output by calling the
      * toString() method on each instruction contained therein, in order
+     *
+     * @param program - a list of instructions in the program
+     *
      */
     public static void displayInstructions(List<Instruction> program) {
-
-
+            List< Machine.Instruction > program ) {
+            System.out.println( "\nCompiled code:" );
+            for ( Machine.Instruction instr: program ) {
+                System.out.println( instr );
+            }
+            System.out.println();
     }
 
     /**
-     * @param program - a list of Machine Instructions
-     *
      * Run a "compiled" program by executing in order each instruction contained therein
+     *
+     * @param program - a list of Machine Instructions
      */
     public static void execute(List<Instruction> program) {
-
-
+        reset();
+        System.out.println("Executing compiled code...");
+        for ( Instruction instr: program ) {
+            instr.execute();
+        }
+        System.out.println( "Machine: execution ended with " +
+                stack.size() + " items left on the stack." );
+        System.out.println();
+        Errors.dump( table );
     }
 }
